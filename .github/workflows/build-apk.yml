@@ -12,16 +12,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 18.x
-
-      # 新增：清理可能干扰的文件夹
-      - name: Clean up previous build folders
-        run: rm -rf ionic_build_folder
-
+      
       - name: Convert to APK
         uses: darkshredder/web-to-app-action@main
         with:
-          build-folder-path: "."
-          app-name: "OneThing"
+          build-folder-path: "www"          # 🔥 关键：只打包 www 文件夹
+          app-name: "OneThing"              # 你的 App 名称
+          app-id: "com.yourcompany.onething" # 可选：包名（如果不指定，工具会自动生成）
           output-folder-path: "my-apks"
       
       - name: Upload Artifact
