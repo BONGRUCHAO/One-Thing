@@ -11,14 +11,14 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18.x
+          node-version: 22.x          # 🔥 升级到 22.x，满足 Capacitor 要求
       
       - name: Convert to APK
         uses: darkshredder/web-to-app-action@main
         with:
-          build-folder-path: "www"          # 🔥 关键：只打包 www 文件夹
-          app-name: "OneThing"              # 你的 App 名称
-          app-id: "com.yourcompany.onething" # 可选：包名（如果不指定，工具会自动生成）
+          build-folder-path: "www"    # 你的网页文件夹（已创建）
+          app-name: "OneThing"        # 应用名称
+          # 注意：此 Action 不支持 app-id，已移除
           output-folder-path: "my-apks"
       
       - name: Upload Artifact
