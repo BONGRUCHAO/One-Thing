@@ -15,11 +15,16 @@ jobs:
         with:
           node-version: 22.x
 
-      # 🔥 关键修复：先创建 package.json
+      # 🔥 关键修复：安装 Java 21（Capacitor 7+ 要求）
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'   # 推荐使用 Eclipse Temurin（原 AdoptOpenJDK）
+          java-version: '21'
+
       - name: Initialize npm project
         run: npm init -y
 
-      # 🔥 关键修复：安装 Capacitor 核心和 Android 平台依赖
       - name: Install Capacitor
         run: |
           npm install @capacitor/cli @capacitor/core
