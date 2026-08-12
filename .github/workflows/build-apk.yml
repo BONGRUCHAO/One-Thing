@@ -1,0 +1,31 @@
+name: Convert to APK and upload
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      # 如果你需要构建（比如用 npm run build），取消下面两行的注释
+      # - run: npm install
+      # - run: npm run build
+      - name: Convert to APK
+        uses: darkshredder/web-to-app-action@main
+        with:
+          build-folder-path: "."  # 你的HTML文件所在的文件夹，"."代表根目录
+          app-name: "OneThing"    # 你的应用名称
+          output-folder-path: "my-apks"
+      - name: 'Upload Artifact'
+        uses: actions/upload-artifact@v2
+        with:
+          name: Final-apks
+          path: my-apks/
