@@ -5,22 +5,18 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [18.x]   # 使用较新的 Node 版本
     steps:
       - uses: actions/checkout@v4
       
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
-          # 移除了 cache，因为项目没有 package.json
-      
-      # 如果你确实需要运行 npm install（比如有构建工具），可以添加
-      # - run: npm install
-      # - run: npm run build
-      
+          node-version: 18.x
+
+      # 新增：清理可能干扰的文件夹
+      - name: Clean up previous build folders
+        run: rm -rf ionic_build_folder
+
       - name: Convert to APK
         uses: darkshredder/web-to-app-action@main
         with:
@@ -28,7 +24,7 @@ jobs:
           app-name: "OneThing"
           output-folder-path: "my-apks"
       
-      - name: 'Upload Artifact'
+      - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: Final-apks
