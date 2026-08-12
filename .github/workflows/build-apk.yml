@@ -7,17 +7,17 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [18.x]   # 使用较新的 Node 版本
     steps:
-      - uses: actions/checkout@v4  # 建议也升级到 v4
+      - uses: actions/checkout@v4
       
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'npm'
+          # 移除了 cache，因为项目没有 package.json
       
-      # 如果你需要构建（比如用 npm run build），取消下面两行的注释
+      # 如果你确实需要运行 npm install（比如有构建工具），可以添加
       # - run: npm install
       # - run: npm run build
       
@@ -29,7 +29,7 @@ jobs:
           output-folder-path: "my-apks"
       
       - name: 'Upload Artifact'
-        uses: actions/upload-artifact@v4  # ✅ 已升级到 v4
+        uses: actions/upload-artifact@v4
         with:
           name: Final-apks
           path: my-apks/
