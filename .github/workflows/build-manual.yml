@@ -13,14 +13,20 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22.x  # 使用 Node 22 满足 Capacitor 要求
+          node-version: 22.x
 
-      - name: Install Capacitor CLI
-        run: npm install -g @capacitor/cli
+      # 🔥 关键修复：先创建 package.json
+      - name: Initialize npm project
+        run: npm init -y
 
-      - name: Create Capacitor project
+      # 🔥 关键修复：安装 Capacitor 核心和 Android 平台依赖
+      - name: Install Capacitor
         run: |
-          npx cap init OneThing com.yourcompany.onething --web-dir=www
+          npm install @capacitor/cli @capacitor/core
+          npm install @capacitor/android
+
+      - name: Initialize Capacitor
+        run: npx cap init OneThing com.yourcompany.onething --web-dir=www
 
       - name: Add Android platform
         run: npx cap add android
